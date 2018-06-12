@@ -1,0 +1,51 @@
+%% Initialize Data Structures
+minutes = 0.1; % number of minutes to collect data
+mass_record = zeros(60*minutes,1);
+
+%% Instrument Connection
+
+% Find a serial port object.
+mass_balance = instrfind('Type', 'serial', 'Port', 'COM3', 'Tag', '');
+
+% Create the serial port object if it does not exist
+% otherwise use the object that was found.
+if isempty(mass_balance)
+    mass_balance = serial('COM3');
+else
+    fclose(mass_balance);
+    mass_balance = mass_balance(1);
+end
+
+% Connect to instrument object, mass_balance.
+fopen(mass_balance);
+
+% Take measurements every second for the total duration defined by
+% 'minutes'
+seconds = 0;
+
+t = timer();
+t.ExecutionMode = 'fixedRate';
+t.Period = 1;
+t.TasksToExecute = size(mass_record,1);
+t.TimerFcn = {@collect_mass, mass_balance};
+start(t)
+
+
+%% Disconnect and Clean Up
+
+
+
+
+%% Define timer callback function for collecting data from the balance
+
+function collect_mass(~, ~, mass_balance)
+    disp('mass: ')
+    disp(fscanf(mass_balance))
+    % Flush the data in the input buffer.
+    %flushinput(mass_balance);
+end
+
+%% Define timer end function for closing the balance communication
+% Disconnect from instrument object, mass_balance.
+fu
+fclose(mass_balance);
