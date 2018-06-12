@@ -1,5 +1,5 @@
 %% Setup
-minutes = 0.2; % number of minutes to collect data
+minutes = 0.3; % number of minutes to collect data
 
 %% Instrument Connection
 
@@ -19,11 +19,7 @@ end
 fopen(mass_balance);
 
 mass_record = zeros(60*minutes,2);
-dataTable = array2table(mass_record,...
-    'VariableNames',{'Time','Mass'});
-mass_plot = scatter(dataTable.Time,dataTable.Mass);
-drawnow
-%mass_record(:,1) = 1:size(mass_record,1);
+plot_mass(mass_record)
 
 % Take measurements every second for the total duration ('minutes')
 t = timer();
@@ -35,20 +31,6 @@ t.TimerFcn = {@collect_mass, mass_balance, t};
 t.StopFcn = {@close_instrument, mass_balance, t};
 start(t)
 
-while strcmp(t.Running,'on') == 1
-    mass_record = get(t, 'UserData');
-    dataTable = array2table(mass_record,...
-    'VariableNames',{'Time','Mass'});
-    scatter(dataTable.Time,dataTable.Mass)
-    drawnow
-end
-if strcmp(t.Running,'off') == 1
-    mass_record = get(t, 'UserData');
-    dataTable = array2table(mass_record,...
-    'VariableNames',{'Time','Mass'});
-    scatter(dataTable.Time,dataTable.Mass)
-end
-
 %% Define timer callback function for collecting data from the balance
 function collect_mass(~, ~, mass_balance, timer)
     seconds = int64(timer.TasksExecuted);
@@ -57,13 +39,27 @@ function collect_mass(~, ~, mass_balance, timer)
     mass_record(seconds,2) = str2double(fscanf(mass_balance));
     timer.UserData = mass_record;
     flushinput(mass_balance); % Flush the data in the input buffer
-    dataTable = array2table(mass_record,...
-    'VariableNames',{'Time','Mass'});
-    scatter(dataTable.Time,dataTable.Mass)
+    mass_record = get(timer, 'UserData');
+    plot_mass(mass_record)
 end
 
 %% Define timer end function for disconnecting from the mass balance instrument
 function close_instrument(~, ~, mass_balance, timer)
     fclose(mass_balance);
     stop(timer)
+    mass_record = get(timer, 'UserData');
+    plot_mass(mass_record)
+end
+
+%% Get the UserData from the timer and plot it
+function plot_mass(mass_record)
+    dataTable = array2table(mass_record,...
+    'VariableNames',{'Time','Mass'});
+    scatter(dataTable.Time,dataTable.Mass)
+    title('Accumulated Sediment Mass vs. Time')
+    xlabel('Time (s)')
+    ylabel('Mass (g)')
+    xlim([0 size(mass_record,1)])
+    ylim([0 inf])
+    drawnow
 end
