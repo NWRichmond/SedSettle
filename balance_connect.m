@@ -1,5 +1,5 @@
 %% Setup
-minutes = 0.3; % number of minutes to collect data
+minutes = 0.5; % number of minutes to collect data
 
 %% Instrument Connection
 
@@ -53,9 +53,12 @@ end
 
 %% Get the UserData from the timer and plot it
 function plot_mass(mass_record)
-    dataTable = array2table(mass_record,...
+    dataTable = array2table(mass_record, ...
     'VariableNames',{'Time','Mass'});
-    scatter(dataTable.Time,dataTable.Mass)
+    scatter(dataTable.Time,dataTable.Mass, ...
+        'MarkerEdgeColor',[0 .5 .5], ...
+        'MarkerFaceColor',[0 .7 .7], ...
+        'LineWidth',1.5)
     title('Accumulated Sediment Mass vs. Time')
     xlabel('Time (s)')
     ylabel('Mass (g)')
