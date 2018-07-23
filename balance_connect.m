@@ -147,3 +147,22 @@ function [ new_mass_timeseries ] = compareExpectedMeasuredPhi(mass_timeseries, e
     new_mass_timeseries.mass = measured_mass;
     new_mass_timeseries.interval_weight = interval_weight;
 end
+%% ASSIGN SIZE LABELS BASED ON PHI SIZE
+function sizeLabel = convertPhiToSize(phi)
+    switch phi
+        case phi <= -8 
+            sizeLabel = "BOULDERS";
+        case (phi <= -6 & phi > -2)
+            sizeLabel = "COBBLES";
+        case (phi <= -2 & phi > -1)
+            sizeLabel = "PEBBLES";
+        case (phi <= -1 & phi > 0)
+            sizeLabel = "GRANULES";
+        case (phi <= -1 & phi > 0)
+            sizeLabel = "VERY COARSE SAND";
+        case (phi <= -1 & phi > 0)
+            sizeLabel = "GRANULES";
+        otherwise
+            warning('Unexpected plot type. No plot created.')
+    end
+end
