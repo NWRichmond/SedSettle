@@ -1,3 +1,7 @@
+%% Notes
+% T is timer
+% Q is mass read from the balance
+% 
 %% Setup
 minutes = 0.1; % number of minutes to collect data
 sampling_interval = 0.25; % how often should the data be collected (seconds)?
