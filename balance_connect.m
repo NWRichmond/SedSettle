@@ -1,7 +1,11 @@
 %% Notes
-% T is timer
+% T is time (observed)
+% PHIT is expected phi time
 % Q is mass read from the balance
-% 
+% QQ is weight
+% WT is interval weight
+% ED is dry weight input
+% E is total immersed weight
 %% Setup
 minutes = 0.1; % number of minutes to collect data
 sampling_interval = 0.25; % how often should the data be collected (seconds)?
@@ -29,6 +33,8 @@ data_mass_timeseries = array2table(data_out{1}, ...
 data_expected_kinematics = array2table(data_out{2}, ...
     'VariableNames',{'velocity','phiT'});
 stop(t)
+new_mass_timeseries = compareExpectedMeasuredPhi(data_mass_timeseries, ...
+    data_expected_kinematics);
 
 %% Instrument Connection
 function mass_balance = connectToBalance(COM_port)
@@ -91,7 +97,7 @@ function plot_mass(mass_record, sampling_interval)
     drawnow
 end
 
-%% CALCULATE SETTLING VELOCITY
+%% CALCULATE SETTLING VELOCITY (EXPECTED PHI TIMES)
 function [kvel,phiT] = settlingVelocity(water_temp, settling_tube_length)
 % Calculate settling velocities for 1/4 phi intervals
 %   NOTE: Density and Viscosity interploation is valid only for 16-30 degC
@@ -147,21 +153,54 @@ function [ new_mass_timeseries ] = compareExpectedMeasuredPhi(mass_timeseries, e
     new_mass_timeseries.mass = measured_mass;
     new_mass_timeseries.interval_weight = interval_weight;
 end
+%% GRAINSIZE STATISTICS
+function grainsizeStatistics(dry_weight_input)
+    B = -1;
+    C = 4;
+    D = 0.25;
+    G = zeros(20);
+    H = 0; % Cumulative total weight
+    N = 0;
+    total_immersed_weight = dry_weight_input / 1.65;
+    for F = B:D:C % from B to C in increments of D
+       N = N + 1;
+       G(N) = WT(N);
+       H = H + G(N);
+    end
+    K = ((H / total_immersed_weight) - 1) * 100;
+    if (abs(K) > 5)
+        disp('Weight Error is >5%')
+    end
+end
 %% ASSIGN SIZE LABELS BASED ON PHI SIZE
 function sizeLabel = convertPhiToSize(phi)
     switch phi
         case phi <= -8 
             sizeLabel = "BOULDERS";
-        case (phi <= -6 & phi > -2)
+        case (phi >= -6 & phi < -2)
             sizeLabel = "COBBLES";
-        case (phi <= -2 & phi > -1)
+        case (phi >= -2 & phi < -1)
             sizeLabel = "PEBBLES";
-        case (phi <= -1 & phi > 0)
+        case (phi >= -1 & phi < 0)
             sizeLabel = "GRANULES";
-        case (phi <= -1 & phi > 0)
+        case (phi >= 0 & phi < 1)
             sizeLabel = "VERY COARSE SAND";
-        case (phi <= -1 & phi > 0)
-            sizeLabel = "GRANULES";
+        case (phi >= 1 & phi < 2)
+            sizeLabel = "COARSE SAND";
+        case (phi >= 2 & phi < 3)
+            sizeLabel = "MEDIUM SAND";
+        case (phi >= 3 & phi < 4)
+            sizeLabel = "FINE SAND";
+        case (phi >= 4 & phi < 5)
+            sizeLabel = "VERY FINE SAND";
+        case (phi >= 5 & phi < 6)
+            sizeLabel = "COARSE SILT";
+        case (phi >= 6 & phi < 7)
+            sizeLabel = "FINE SILT";
+        case (phi >= 7 & phi < 8)
+            sizeLabel = "VERY FINE SILT";
+        case (phi >8)
+            sizeLabel = "CLAY";
         otherwise
             warning('Unexpected plot type. No plot created.')
     end
