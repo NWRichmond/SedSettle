@@ -1,5 +1,5 @@
 %% COMPARE DATA TO EXPECTED PHI TIMES
-function [ new_mass_timeseries ] = compareExpectedMeasuredPhi(mass_timeseries, expected_kinematics)
+function new_mass_timeseries = compareExpectedMeasuredPhi(mass_timeseries, expected_kinematics)
     interval_weight = zeros(20,1);
     phi = -1;
     fprintf('%s\n', ...
