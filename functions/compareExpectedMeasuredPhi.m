@@ -12,18 +12,18 @@ function new_mass_timeseries = compareExpectedMeasuredPhi(mass_timeseries, expec
         for j = 1:size(mass_timeseries,1)
             if measured_time(j) >= low
                 measured_time(i) = measured_time(j);
-            end
-            measured_time(i) = measured_time(j);
-            if i == 1
-                interval_weight(i) = 0;
-            elseif i > 1
-                interval_weight(i) = measured_mass(i) - measured_mass(i-1);
-            end
-            if interval_weight(i) < 0
-                interval_weight = 0;
+                measured_mass(i) = measured_mass(j);
+                if i == 1
+                    interval_weight(i) = 0;
+                elseif i > 1
+                    interval_weight(i) = measured_mass(i) - measured_mass(i-1);
+                end
+                if interval_weight(i) < 0
+                    interval_weight = 0;
+                end
             end
         end
-        fprintf('%.2f    %.2f        %.2f        %.2f\n', ...
+        fprintf('%.2f    %.1f        %.1f        %.1f\n', ...
             phi,expected_time(i),measured_time(i),interval_weight(i));
         phi = phi + 0.25;
     end
