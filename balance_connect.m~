@@ -8,19 +8,21 @@
 % E is total immersed weight
 
 %% Setup
-% NOTE: This code requires the MATLAB Fuzzy Logic Toolbox
-minutes = 0.1; % number of minutes to collect data (default is 10
+minutes = 0.1; % number of minutes to collect data (default is 10 minutes)
 sampling_interval = 0.25; % how often should the data be collected (seconds)?
 sample_number = 1;
-water_temp = 25; % degrees C
+water_temp = 23; % degrees C
 settling_tube_length = 203.3; % cm
 STvars = struct('water_temp',water_temp,'st_length',settling_tube_length);
+
 % Create dummy data
-water_temp = 22; % deg C
+% NOTE: This code requires the MATLAB Fuzzy Logic Toolbox
 x = (0:0.6:((60*10)-0.6)); % time in seconds
 x = x(:);
 y = cumsum(gaussmf(x,[80 120])/33); % cumulative sum of gaussian distribution
 mass_record = [x y];
+immersed_mass_record = [x (y/1.65)];
+dry_weight_input = max(y); % assume 1% of the sample is lost
 %% Take measurements at a specified sampling interval
 %   Time increment defined by 'sampling_interval'
 %   Total duration of sampling period is defined by 'minutes'
@@ -43,9 +45,28 @@ mass_record = [x y];
 
 [kvel,phiT] = settlingVelocity(water_temp, settling_tube_length);
 vel = [kvel phiT];
-data_mass_timeseries = array2table(mass_record, ...
+data_mass_timeseries = array2table(immersed_mass_record, ...
     'VariableNames',{'time','mass'});
 data_expected_kinematics = array2table(vel, ...
     'VariableNames',{'velocity','phiT'});
 new_mass_timeseries = compareExpectedMeasuredPhi(data_mass_timeseries, ...
     data_expected_kinematics);
+cumulative_weight = grainStatistics(dry_weight_input, new_mass_timeseries);
+
+function cumulative_weight = grainStatistics(dry_weight, mass_timeseries)
+    immersed_weight = dry_weight / 1.65; % E
+    interval_weight = mass_timeseries.interval_weight; % WT
+    new_weight = zeros(size(-1:0.25:4,2),1);
+    cumulative_weight = zeros((size(-1:0.25:4,2))+1,1);
+    cumulative_weight(1) = 0;
+    j = 0;
+    for i = -1:0.25:4
+        j = j + 1;
+        new_weight(j) = interval_weight(j);
+        cumulative_weight(j) = cumulative_weight + interval_weight(j);
+    end
+    percent_weight_error = ((cumulative_weight / immersed_weight) - 1) * 100;
+    fprintf('\nTotal Immersed Weight (grams): %.2f\n', immersed_weight);
+    fprintf('\nCumulative Total Weight (grams) : %.2f\n', cumulative_weight);
+    fprintf('\nPercent Weight Error: %.2f\n', percent_weight_error);
+end
