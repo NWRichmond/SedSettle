@@ -4,10 +4,11 @@ function new_mass_timeseries = compareExpectedMeasuredPhi(mass_timeseries, expec
     phi = -1;
     fprintf('%s\n', ...
             'phi      t_expected t_observed   interval_weight');
+    measured_mass = mass_timeseries.mass; % QQ
+    measured_time = mass_timeseries.time; % T
+    expected_time = expected_kinematics.phiT; % PHIT
     for i = 1:size(expected_kinematics,1) % 1:21
-        measured_mass = mass_timeseries.mass; % QQ
-        measured_time = mass_timeseries.time; % T
-        expected_time = expected_kinematics.phiT; % PHIT
+
         low = expected_time(i) - 0.03;
         for j = 1:size(mass_timeseries,1) % 1:1000
             if measured_time(j) >= low
@@ -19,8 +20,6 @@ function new_mass_timeseries = compareExpectedMeasuredPhi(mass_timeseries, expec
         if i == 1
             interval_weight(i) = 0;
         elseif i > 1
-            fprintf('At position %.1f ,   %.2f    minus    %.2f    equals    %.2f\n', ...
-            i,measured_mass(i),measured_mass(i-1),(measured_mass(i) - measured_mass(i-1)));
             interval_weight(i) = measured_mass(i) - measured_mass(i-1);
         end
         if interval_weight(i) < 0
