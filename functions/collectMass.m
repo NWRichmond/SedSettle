@@ -9,5 +9,5 @@ function collectMass(~, ~, mass_balance, timer, sampling_interval)
     timer.UserData = mass_record;
     flushinput(mass_balance); % Flush the data in the input buffer
     mass_record = get(timer, 'UserData');
-    plot_mass(mass_record, sampling_interval)
+    plotMass(mass_record, sampling_interval)
 end

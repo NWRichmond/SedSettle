@@ -44,6 +44,7 @@ function new = compareExpectedMeasuredPhi(mass_timeseries, expected_kinematics, 
     new.cumulative_sum_weight = cumsum(interval_weight);
     new.percent_of_sample = (interval_weight / ...
         max(new.cumulative_sum_weight))*100;
+    new.cumulative_percent = cumsum(new.percent_of_sample);
     dry_mass_interval =  (new.percent_of_sample/100) * dry_mass;
     new.dry_mass_interval = dry_mass_interval;
     new.dry_mass_cumulative = cumsum(dry_mass_interval);
