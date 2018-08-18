@@ -9,7 +9,9 @@
 % E is total immersed weight
 % F is a record of phi sizes from -1 to 4 in increments of 0.25
 % H is Cumulative Total Weight
+% HH is a new record of H for use in a new loop
 % K is Percent Weight Error
+% L is a record of the cumulative weights
 % A is percentile (for PHI)
 % P is phi size at percentile P
 
@@ -70,6 +72,7 @@ if use_dummy_data == false
 vel = [kvel phiT];
 new_mass_timeseries = compareExpectedMeasuredPhi(data_mass_timeseries, ...
     data_expected_kinematics, water_properties.density, dry_weight_input);
-grainStatistics(dry_weight_input, new_mass_timeseries);
+grainStatistics(dry_weight_input, new_mass_timeseries)
 cumulative_curve_plot = plotCumulativeCurve(new_mass_timeseries);
+phiPercentiles(new_mass_timeseries)
 end

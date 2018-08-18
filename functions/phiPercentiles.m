@@ -12,18 +12,12 @@ for i = 1:7
             N = N + 1;
             M = N - 1;
             Ftemp = F(N) - 0.25;
-%             if k < 4
-                if (L(N) >= percentile(i))
-                    phiPercentile(i) = (0.25 * (percentile(i) - L(M)) / (L(N) - L(M))) + Ftemp;
-%                     fprintf('percentile:    %.0f%%  , L(M) =  %.2f , L(N) = %.2f , F(M) = %.2f\n', ...
-%                     percentile(i),L(M),L(N),F(M));
-                end
-%             end
+            if (L(N) >= percentile(i))
+                phiPercentile(i) = (0.25 * (percentile(i) - L(M))) / (L(N) - L(M)) + Ftemp;
+                break
+            end
         end
-        
-        
-        fprintf('PHI    %.0f%%   =  %.2f\n', ...
-             percentile(i),phiPercentile(i));
+        fprintf('PHI   %.0f%%  =  %.2f\n',percentile(i),phiPercentile(i));
 end
 
 end
