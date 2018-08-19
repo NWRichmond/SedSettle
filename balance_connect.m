@@ -8,6 +8,7 @@
 % ED is dry weight input
 % E is total immersed weight
 % F is a record of phi sizes from -1 to 4 in increments of 0.25
+% G is a copy of WT, interval weight
 % H is Cumulative Total Weight
 % HH is a new record of H for use in a new loop
 % K is Percent Weight Error
@@ -41,9 +42,7 @@ if use_dummy_data == true
     data_expected_kinematics = array2table(vel, ...
         'VariableNames',{'velocity','phiT'});
     new_mass_timeseries = compareExpectedMeasuredPhi(data_mass_timeseries, ...
-    data_expected_kinematics, water_properties.density, dry_weight_input);
-    grainStatistics(dry_weight_input, new_mass_timeseries);
-    cumulative_curve_plot = plotCumulativeCurve(new_mass_timeseries);
+        data_expected_kinematics, water_properties.density, dry_weight_input);
 end
 %% Take measurements at a specified sampling interval
 %   Time increment defined by 'sampling_interval'
@@ -66,13 +65,12 @@ if use_dummy_data == false
     data_expected_kinematics = array2table(data_out{2}, ...
         'VariableNames',{'velocity','phiT'});
     stop(t)
-
-% RUN THE STATISTICS
-[kvel,phiT, water_properties] = settlingVelocity(water_temp, settling_tube_length);
-vel = [kvel phiT];
-new_mass_timeseries = compareExpectedMeasuredPhi(data_mass_timeseries, ...
-    data_expected_kinematics, water_properties.density, dry_weight_input);
+    [kvel,phiT, water_properties] = settlingVelocity(water_temp, settling_tube_length);
+    vel = [kvel phiT];
+    new_mass_timeseries = compareExpectedMeasuredPhi(data_mass_timeseries, ...
+        data_expected_kinematics, water_properties.density, dry_weight_input);
+end
+%% RUN THE STATISTICS
 grainStatistics(dry_weight_input, new_mass_timeseries)
 cumulative_curve_plot = plotCumulativeCurve(new_mass_timeseries);
 phiPercentiles(new_mass_timeseries)
-end
