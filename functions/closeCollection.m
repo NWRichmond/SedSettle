@@ -4,8 +4,6 @@ function closeCollection(~, ~, mass_balance, timer, sampling_interval, STvars)
     fclose(mass_balance); % Terminate connection with the mass balance
     mass_record = get(timer, 'UserData');
     plotMass(mass_record, sampling_interval)
-    settling_tube_length = STvars.st_length;
-    water_temp = STvars.water_temp;
-    [kvel,phiT] = settlingVelocity(water_temp, settling_tube_length);
+    [kvel,phiT] = settlingVelocity(STvars);
     timer.UserData = {timer.UserData,[kvel,phiT]};
 end

@@ -1,7 +1,9 @@
 %% CALCULATE SETTLING VELOCITY (EXPECTED PHI TIMES)
-function [kvel,phiT,water_properties] = settlingVelocity(water_temp, settling_tube_length)
+function [kvel,phiT,water_properties] = settlingVelocity(STvars)
 % Calculate settling velocities for 1/4 phi intervals
 %   NOTE: Density and Viscosity interploation is valid only for 16-30 degC
+    settling_tube_length = STvars.st_length;
+    water_temp = STvars.water_temp;
     density = 1.002878 - (0.000236 * water_temp);
     kinVisc = 1.657 * exp(-0.0248 * water_temp);
     dynVisc = kinVisc / (density * 100);

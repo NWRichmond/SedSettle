@@ -1,4 +1,4 @@
-function phiPercentiles(new_mass_timeseries)
+function phiPercentile = phiPercentiles(new_mass_timeseries)
 %PHIPERCENTILES computes the phi percentiles by linear interpolation.
 %   Use caution for phi intervals > 0.5.
 percentile = [5;16;25;50;75;84;95];
@@ -17,7 +17,7 @@ for i = 1:7
                 break
             end
         end
-        fprintf('PHI   %.0f%%  =  %.2f\n',percentile(i),phiPercentile(i));
+        fprintf('PHI %.0f%%\t= %.2f\n',percentile(i),phiPercentile(i));
 end
-
+fprintf('\n');
 end

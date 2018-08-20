@@ -5,7 +5,7 @@ F = F(:);
 L = new_mass_timeseries.cumulative_percent;
 mode = F(M);
 cum_wt_percent = L(M);
-fprintf('MODE =  %.2f PHI      %.2f Cumulative Weight %%\n', ...
+fprintf('MODE = %.2f PHI\t\t%.2f Cumulative Weight %%\n', ...
     mode,cum_wt_percent);
 end
 

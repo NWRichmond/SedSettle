@@ -1,6 +1,6 @@
 function [M_out,N_out] = folkWardModeLoop(new_mass_timeseries, start, finish, N_in, operator, varargin)
 % Calculate the mode, graphic mean, skewness, and kurtosis.
-% G is a copy of WT, interval weight
+%% Parse the input variables
 validScalarNum = @(x) isnumeric(x) && isscalar(x);
 validStride = @(x) isnumeric(x) && (x > 0) && (x <= 1);
 expectedOperators = {'<','<=','>='};
@@ -13,8 +13,8 @@ p = inputParser;
     addRequired(p,'N_in', validNvalues);
     addRequired(p,'operator', @(x) any(validatestring(x,expectedOperators)));
     addParameter(p,'stride', defaultStride, validStride);
-    
 parse(p, new_mass_timeseries, start, finish, N_in, operator, varargin{:});
+%% Define variables based on the parsed inputs
 new_mass_timeseries = p.Results.new_mass_timeseries;
 start = p.Results.start;
 finish = p.Results.finish;
@@ -22,7 +22,8 @@ N_in = p.Results.N_in;
 operator = p.Results.operator;
 stride = p.Results.stride;
 G = new_mass_timeseries.interval_weight;
-N_out = N_in;
+N_out = N_in; % initialize N
+%% Loop until expression is satisfied
 for i = start:stride:finish
     N_out = N_out + 1;
     M_out = N_out - 1;
@@ -42,5 +43,4 @@ for i = start:stride:finish
         break
     end
 end
-
 end
