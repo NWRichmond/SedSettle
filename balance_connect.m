@@ -74,3 +74,4 @@ end
 grainStatistics(dry_weight_input, new_mass_timeseries)
 cumulative_curve_plot = plotCumulativeCurve(new_mass_timeseries);
 phiPercentiles(new_mass_timeseries)
+folkWardStats(new_mass_timeseries)
