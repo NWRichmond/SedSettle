@@ -2,7 +2,7 @@
 sample_number = 1;
 minutes = 0.2; % number of minutes to collect data (default is 10 minutes)
 sampling_interval = 0.25; % how often should the data be collected (seconds)?
-dry_weight_input = 1.23; % g
+dry_weight_input = 9.456; % g
 water_temp = 23; % degrees C
 settling_tube_length = 203.3; % cm
 SampleVars = struct('minutes',minutes,'sampling_interval',sampling_interval, ...
