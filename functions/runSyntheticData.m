@@ -13,5 +13,6 @@ function [new_mass_timeseries, figHandle] = runSyntheticData(STvars,minutes,samp
         'VariableNames',{'velocity','phiT'});
     new_mass_timeseries = compareExpectedMeasuredPhi(data_mass_timeseries, ...
         data_expected_kinematics, water_properties.density, dry_weight_input);
-    figHandle = plotMass([x y],sampling_interval);
+    figHandle = figure('Name','Accumulated Sediment','NumberTitle','off');
+    plotMass(figHandle,[x y],sampling_interval);
 end

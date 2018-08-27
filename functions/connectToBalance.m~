@@ -6,18 +6,18 @@ function mass_balance = connectToBalance(COM_port)
 % '/dev/cu.usbserial' and is likely followed by an 8-character
 % alphanumeric code, e.g., "/dev/cu.usbserial-DN02DXXM"
     % Find a serial port object.
+    mass_balance = instrfind('Type', 'serial', 'Port', COM_port, 'Tag', '');
     if ismac
+        % Code to run on Mac plaform
         usbserial = dir('/dev/cu.usbserial*');
-        COM_port = strcat('/dev/',usbserial.name);
+        COM_port = strcat('/dev/',usbserial);
     elseif isunix
-        usbserial = dir('/dev/cu.usbserial*');
-        COM_port = strcat('/dev/',usbserial.name);
+        % Code to run on Linux plaform
     elseif ispc
-        COM_port = 'COM3';
+        % Code to run on Windows platform
     else
         disp('Platform not supported')
     end
-    mass_balance = instrfind('Type', 'serial', 'Port', COM_port, 'Tag', '');
     % Create the serial port object if it does not exist
     if isempty(mass_balance)
         mass_balance = serial(COM_port);

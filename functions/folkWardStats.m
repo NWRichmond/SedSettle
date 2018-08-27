@@ -27,7 +27,7 @@ skew_1 = (P(2) + P(6) - (2 * P(4))) / (2 * (P(6) - P(2)));
 skew_2 = (P(1) + P(7) - (2 * P(4))) / (2 * (P(7) - P(1)));
 skewness = skew_1 + skew_2;
 skewnessLabel = createSkewnessLabel(skewness);
-fprintf('Including Graphic Standard Deviation: \t%.4f\t\t: %s\n', ...
+fprintf('Including Graphic Skewness: \t\t%.4f\t\t: %s\n', ...
     skewness,skewnessLabel);
 %% GRAPHIC KURTOSIS
 kurtosis = (P(7) - P(1)) / (2.44 * (P(5) - P(3)));

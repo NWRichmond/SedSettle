@@ -1,9 +1,11 @@
 %% PLOT MASS VS. TIME
-function figHandle = plotMass(mass_record, sampling_interval)
+function plotMass(figHandle, mass_record, sampling_interval)
 % Create a plot of Mass vs. Time
-    figHandle = figure;
+    figure(figHandle)
     dataTable = array2table(mass_record, ...
     'VariableNames',{'Time','Mass'});
+    dataTable.Mass(dataTable.Mass < 0) = 0; % adjust for minor issues with
+        % zeroing the balance, should it zero to a slightly negative value
     scatter(dataTable.Mass,dataTable.Time, ...
         'MarkerEdgeColor',[0 .5 .5], ...
         'MarkerFaceColor',[0 .7 .7], ...
