@@ -1,4 +1,4 @@
-function new_mass_timeseries = runDummyData(STvars,minutes,sampling_interval)
+function [new_mass_timeseries, figHandle] = runDummyData(STvars,minutes,sampling_interval)
 % Use artificial data instead of data collected with the settling tube
     x = (0:sampling_interval:((60*minutes)-sampling_interval)); % time in seconds
     x = x(:);
@@ -13,5 +13,5 @@ function new_mass_timeseries = runDummyData(STvars,minutes,sampling_interval)
         'VariableNames',{'velocity','phiT'});
     new_mass_timeseries = compareExpectedMeasuredPhi(data_mass_timeseries, ...
         data_expected_kinematics, water_properties.density, dry_weight_input);
-    plotMass([x y],sampling_interval)
+    figHandle = plotMass([x y],sampling_interval);
 end

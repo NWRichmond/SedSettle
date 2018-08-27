@@ -1,4 +1,4 @@
-function new_mass_timeseries = runSettlingTube(SampleVars, STvars)
+function [new_mass_timeseries, figHandle] = runSettlingTube(SampleVars, STvars)
     minutes = SampleVars.minutes;
     sampling_interval = SampleVars.sampling_interval;
     dry_weight_input = SampleVars.dry_weight_input;
@@ -7,7 +7,8 @@ function new_mass_timeseries = runSettlingTube(SampleVars, STvars)
     t.ExecutionMode = 'fixedRate';
     t.TasksToExecute = (60*minutes)/sampling_interval;
     t.Period = sampling_interval;
-    t.UserData = zeros(60*minutes,2);
+    t.UserData = cell(1,3);
+    t.UserData{1,1} = zeros(60*minutes,2);
     t.TimerFcn = {@collectMass, mass_balance, t, sampling_interval};
     t.StartFcn = @startSounds;
     t.StopFcn = {@closeCollection, mass_balance, t, sampling_interval, STvars};
@@ -18,6 +19,7 @@ function new_mass_timeseries = runSettlingTube(SampleVars, STvars)
         'VariableNames',{'time','mass'});
     data_expected_kinematics = array2table(data_out{2}, ...
         'VariableNames',{'velocity','phiT'});
+    figHandle = data_out{3};
     stop(t)
     new_mass_timeseries = compareExpectedMeasuredPhi(data_mass_timeseries, ...
         data_expected_kinematics, water_properties.density, dry_weight_input);

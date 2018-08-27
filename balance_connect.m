@@ -12,11 +12,11 @@ use_dummy_data = true;
 %% Create dummy data
 % NOTE: This code requires the MATLAB Fuzzy Logic Toolbox
 if use_dummy_data == true
-    new_mass_timeseries = runDummyData(STvars,10,0.6);
+    [new_mass_timeseries, mass_plot] = runDummyData(STvars,10,0.6);
 end
 %% Take measurements at a specified sampling interval
 if use_dummy_data == false
-    new_mass_timeseries = runSettlingTube(SampleVars, STvars);
+    [new_mass_timeseries, mass_plot] = runSettlingTube(SampleVars, STvars);
 end
 %% RUN THE STATISTICS
 grainStatistics(dry_weight_input, new_mass_timeseries)
