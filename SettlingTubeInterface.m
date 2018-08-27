@@ -1,21 +1,22 @@
 %% Setup
 sample_number = 1;
-minutes = 0.2; % number of minutes to collect data (default is 10 minutes)
+minutes = 10; % number of minutes to collect data (default is 10 minutes)
 sampling_interval = 0.25; % how often should the data be collected (seconds)?
 dry_weight_input = 9.456; % g
 water_temp = 23; % degrees C
 settling_tube_length = 203.3; % cm
+use_synthetic_data = true; % set to true to use synthetic data for testing purposes
+%% Package data from previous section as structs
 SampleVars = struct('minutes',minutes,'sampling_interval',sampling_interval, ...
     'dry_weight_input',dry_weight_input);
 STvars = struct('water_temp',water_temp,'st_length',settling_tube_length);
-use_dummy_data = true;
-%% Create dummy data
+%% Use synthetic data
 % NOTE: This code requires the MATLAB Fuzzy Logic Toolbox
-if use_dummy_data == true
-    [new_mass_timeseries, mass_plot] = runDummyData(STvars,10,0.6);
+if use_synthetic_data == true
+    [new_mass_timeseries, mass_plot] = runSyntheticData(STvars,10,0.6);
 end
 %% Take measurements at a specified sampling interval
-if use_dummy_data == false
+if use_synthetic_data == false
     [new_mass_timeseries, mass_plot] = runSettlingTube(SampleVars, STvars);
 end
 %% RUN THE STATISTICS

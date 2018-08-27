@@ -1,4 +1,4 @@
-function [new_mass_timeseries, figHandle] = runDummyData(STvars,minutes,sampling_interval)
+function [new_mass_timeseries, figHandle] = runSyntheticData(STvars,minutes,sampling_interval)
 % Use artificial data instead of data collected with the settling tube
     x = (0:sampling_interval:((60*minutes)-sampling_interval)); % time in seconds
     x = x(:);
