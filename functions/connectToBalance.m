@@ -1,5 +1,5 @@
 %% Instrument Connection
-function mass_balance = connectToBalance(COM_port)
+function mass_balance = connectToBalance
 % Establish connection with the balance
 % Note that 'COM3' is a typical Windows COM port,
 % whereas on MacOS, the typical port is preceded by
@@ -7,13 +7,14 @@ function mass_balance = connectToBalance(COM_port)
 % alphanumeric code, e.g., "/dev/cu.usbserial-DN02DXXM"
     % Find a serial port object.
     if ismac
-        usbserial = dir('/dev/cu.usbserial*');
-        COM_port = strcat('/dev/',usbserial.name);
+        serials = seriallist;
+        COM_port = serials(contains(serials,'cu.usbserial'));
     elseif isunix
-        usbserial = dir('/dev/cu.usbserial*');
-        COM_port = strcat('/dev/',usbserial.name);
+        serials = seriallist;
+        COM_port = serials(contains(serials,'cu.usbserial'));
     elseif ispc
-        COM_port = 'COM3';
+        serials = seriallist;
+        COM_port = serials(contains(serials,'COM3'));
     else
         disp('Platform not supported')
     end

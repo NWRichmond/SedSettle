@@ -1,2 +1,5 @@
-## Ignores MATLAB temporary save files
+## Keep results local
+results/
+
+## Ignore MATLAB temporary save files
 *.asv
