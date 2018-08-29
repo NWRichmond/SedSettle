@@ -1,10 +1,6 @@
 %% Instrument Connection
 function mass_balance = connectToBalance
 % Establish connection with the balance
-% Note that 'COM3' is a typical Windows COM port,
-% whereas on MacOS, the typical port is preceded by
-% '/dev/cu.usbserial' and is likely followed by an 8-character
-% alphanumeric code, e.g., "/dev/cu.usbserial-DN02DXXM"
     % Find a serial port object.
     if ismac
         serials = seriallist;

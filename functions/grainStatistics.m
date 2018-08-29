@@ -13,7 +13,7 @@ function grainStatistics(dry_weight, mass_timeseries)
     end
     percent_weight_error = ((cumulative_weight(end) / immersed_weight) - 1) * 100;
     if (abs(percent_weight_error) > 5)
-        disp('Weight Error is >5%')
+        fprintf('Weight Error is >5%%\n')
     end
     fprintf('\nTotal Immersed Weight (grams): \t\t%.2f\n', immersed_weight);
     fprintf('\nCumulative Total Weight (grams):\t%.2f\n', cumulative_weight(end));

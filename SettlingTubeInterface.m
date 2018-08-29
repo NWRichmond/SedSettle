@@ -1,11 +1,10 @@
 %% CLEANUP
-clear
-clc
+clear; clc;
 %% SETUP
 sample_short_name = 'Ottawa_20-30';
 sample_long_name = strcat(sample_short_name,'_', ...
     string(datetime('now','Format','d-MMM-y_HH:mm')));
-dry_weight_input = 10.00; % g
+dry_weight_input = 8.05; % g
 minutes = 2; % number of minutes to collect data (default is 10 minutes)
 sampling_interval = 0.2; % how often should the data be collected (seconds)?
 water_temp = 24; % degrees C
@@ -29,8 +28,17 @@ end
 %% RUN THE STATISTICS
 grainStatistics(dry_weight_input, data_grainSizeResults)
 cumulative_curve_plot = plotCumulativeCurve(data_grainSizeResults);
-phiPercentileRecord = phiPercentiles(data_grainSizeResults);
-folkWardStats(data_grainSizeResults, phiPercentileRecord)
+folkWardStats(data_grainSizeResults, phiPercentiles(data_grainSizeResults))
 methodOfMoments(data_grainSizeResults)
 %% SAVE THE RESULTS
-saveResults(sample_long_name)
+% NOTE: This happens automatically if you are in the SedSettle directory
+pwd_parts = strsplit(pwd,'/');
+if strcmp(pwd_parts(end), 'SedSettle') == 1
+    workspaceOut = fullfile('results',sample_long_name);
+else % if not in the SedSettle directory, prompt to choose a save location
+    msgbox('Select a directory to save the SedSettle results in.')
+    selpath = uigetdir(pwd,'Select save location for SedSettle results');
+    workspaceOut = fullfile(selpath,sample_long_name);
+end
+warning('off','MATLAB:Figure:FigureSavedToMATFile')
+save(strcat(workspaceOut,'.mat'))
