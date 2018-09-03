@@ -1,9 +1,14 @@
-function [new_mass_timeseries, figHandle] = runSyntheticData(STvars,minutes,sampling_interval)
+function [new_mass_timeseries, figHandle, dry_weight_input] = runSyntheticData(SampleVars, STvars)
 % Use artificial data instead of data collected with the settling tube
+    minutes = SampleVars.minutes;
+    sampling_interval = SampleVars.sampling_interval;
     x = (0:sampling_interval:((60*minutes)-sampling_interval)); % time in seconds
     x = x(:);
-    y = cumsum(gaussmf(x,[80 120])/33); % cumulative sum of gaussian distribution
+    y = cumsum(gaussmf(x,[80 120])/99); % cumulative sum of gaussian distribution
+        % NOTE: this produces a sediment record just shy of 10 grams
     immersed_mass_record = [x (y/1.65)];
+    STvars.dry_weight_input = max(y);
+    dry_weight_input = STvars.dry_weight_input;
     [kvel,phiT] = settlingVelocity(STvars);
     vel = [kvel phiT];
     data_mass_timeseries = array2table(immersed_mass_record, ...

@@ -1,15 +1,13 @@
-function folkWardStats(new_mass_timeseries, phi_percentile_record)
+function folkWardStats(new_mass_timeseries)
 % Calculate the mode, graphic mean, skewness, and kurtosis.
 %% MODE
-phis = -1:0.25:4;
 wt = new_mass_timeseries.interval_weight;
 cp = new_mass_timeseries.cumulative_percent;
 mode_index = find(wt==max(wt));
 fprintf('MODE = %.2f PHI\t\t%.2f Cumulative Weight %%\n', ...
-    phis(mode_index),cp(mode_index));
-%% GRAPHIC MEAN
+    wt(mode_index),cp(mode_index));
 fprintf('\nFollowing are the Folk-Ward Statistical Parameters:\n\n');
-P = phi_percentile_record;
+%% GRAPHIC MEAN
 graphic_mean = (P(2) + P(4) + P(6)) / 3;
 sizeLabel = convertPhiToSize(graphic_mean);
 fprintf('Graphic Mean: \t\t\t\t%.4f\t\t: %s\n',graphic_mean,sizeLabel);
