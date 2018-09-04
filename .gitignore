@@ -1,5 +1,5 @@
 ## Keep results local
-results/*
+#results/*
 
 ## Ignore MATLAB temporary save files
 *.asv

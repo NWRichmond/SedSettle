@@ -1,4 +1,6 @@
 function [new_mass_timeseries, figHandle, data_mass_timeseries, data_expected_kinematics] = runSettlingTube(SampleVars, STvars)
+% RUNSETTLINGTUBE drives the data collection process from the digital mass
+%   balance. The process is driven using a timer. 
     minutes = SampleVars.minutes;
     sampling_interval = SampleVars.sampling_interval;
     mass_balance = connectToBalance;

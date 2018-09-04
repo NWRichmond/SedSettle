@@ -1,6 +1,8 @@
 function startSounds(~, ~, firstbeeps, secondbeeps, time_between_beeps)
-%STARTSOUNDS Summary of this function goes here
-%   Detailed explanation goes here
+%STARTSOUNDS plays a series of beeps to cue the settling tube operator
+%   as to when the sediment should be poured into the column, and serves as
+%   the StartFcn for the timer which drives the settling tube data
+%   collection process run by the timer used in runSettlingTube.m.
 load beeps.mat c_tone e_tone c_major_5x;
 
 t3 = timer();

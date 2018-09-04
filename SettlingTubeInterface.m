@@ -4,7 +4,7 @@ clear; clc;
 sample_short_name = 'DanSand_02';
 sample_long_name = strcat(sample_short_name,'_', ...
     string(datetime('now','Format','d-MMM-y_HH:mm')));
-dry_weight_input = 7.18; % g
+dry_weight_input = 9.80; % g
 minutes = 10; % number of minutes to collect data (default is 10 minutes)
 sampling_interval = 0.2; % how often should the data be collected (seconds)?
 water_temp = 24; % degrees C
