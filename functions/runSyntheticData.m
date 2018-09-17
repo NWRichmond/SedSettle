@@ -1,6 +1,9 @@
 function [new_mass_timeseries, figHandle, dry_weight_input] = runSyntheticData(SampleVars, STvars)
 % Use artificial data instead of data collected with the settling tube.
 %   Requires the Fuzzy Logic Toolbox.
+%
+%   To run from SettlingTubeInterface.m:
+%       [data_grainSizeResults, mass_plot, dry_weight_input] = runSyntheticData(SampleVars, STvars);
     minutes = SampleVars.minutes;
     sampling_interval = SampleVars.sampling_interval;
     x = (0:sampling_interval:((60*minutes)-sampling_interval)); % time in seconds

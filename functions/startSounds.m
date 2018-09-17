@@ -25,6 +25,12 @@ t1.Period = time_between_beeps;
 t1.TimerFcn = @(~,thisEvent)sound(c_tone);
 t1.StopFcn = @(~,thisEvent)start(t2);
 
-start(t1)
+t0 = timer();
+t0.ExecutionMode = 'singleShot';
+t0.TimerFcn = @(~,thisEvent)waitfor(msgbox('Press OK to begin the Settling Tube data collection.'));
+t0.StopFcn = @(~,thisEvent)start(t1);
+
+start(t0)
+
 end
 
