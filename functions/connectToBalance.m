@@ -1,5 +1,5 @@
 %% Instrument Connection
-function mass_balance = connectToBalance
+function [mass_balance, initialReading] = connectToBalance
 % Establish connection with the balance
     % Find a serial port object.
     if ismac
@@ -25,4 +25,7 @@ function mass_balance = connectToBalance
 
     % Connect to instrument object, mass_balance.
     fopen(mass_balance);
+    
+    % Take an initial reading for taring purposes
+    initialReading = str2double(erase(fscanf(mass_balance),'?'));
 end

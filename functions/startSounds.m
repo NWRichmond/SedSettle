@@ -1,4 +1,4 @@
-function startSounds(~, ~, firstbeeps, secondbeeps, time_between_beeps)
+function startSounds(firstbeeps, secondbeeps, time_between_beeps)
 %STARTSOUNDS plays a series of beeps to cue the settling tube operator
 %   as to when the sediment should be poured into the column, and serves as
 %   the StartFcn for the timer which drives the settling tube data
@@ -8,29 +8,24 @@ load beeps.mat c_tone e_tone c_major_5x;
 t3 = timer();
 t3.ExecutionMode = 'singleShot';
 t3.StartDelay = time_between_beeps;
-t3.TimerFcn = @(~,thisEvent)sound(c_major_5x);
+t3.TimerFcn = @(~,~)sound(c_major_5x);
 
 t2 = timer();
 t2.ExecutionMode = 'fixedRate';
 t2.TasksToExecute = secondbeeps;
 t2.Period = time_between_beeps;
 t2.StartDelay = time_between_beeps;
-t2.TimerFcn = @(~,thisEvent)sound(e_tone);
-t2.StopFcn = @(~,thisEvent)start(t3);
+t2.TimerFcn = @(~,~)sound(e_tone);
+t2.StopFcn = @(~,~)start(t3);
 
 t1 = timer();
 t1.ExecutionMode = 'fixedRate';
 t1.TasksToExecute = firstbeeps;
 t1.Period = time_between_beeps;
-t1.TimerFcn = @(~,thisEvent)sound(c_tone);
-t1.StopFcn = @(~,thisEvent)start(t2);
+t1.TimerFcn = @(~,~)sound(c_tone);
+t1.StopFcn = @(~,~)start(t2);
 
-t0 = timer();
-t0.ExecutionMode = 'singleShot';
-t0.TimerFcn = @(~,thisEvent)waitfor(msgbox('Press OK to begin the Settling Tube data collection.'));
-t0.StopFcn = @(~,thisEvent)start(t1);
-
-start(t0)
+start(t1)
 
 end
 

@@ -1,12 +1,20 @@
 %% PLOT MASS VS. TIME
-function plotMass(figHandle, mass_record, sampling_interval)
+function figHandle = plotMass(figHandle, mass_record, varargin)
 % Create a plot of Mass vs. Time
-    figure(figHandle)
-    dataTable = array2table(mass_record, ...
-    'VariableNames',{'Time','Mass'});
-    dataTable.Mass(dataTable.Mass < 0) = 0; % adjust for minor issues with
+    if isvalid(figHandle)
+        figure(figHandle)
+    else
+        figHandle = figure('Name','Accumulated Sediment','NumberTitle','off');
+    end
+    if isnumeric(mass_record) == 1
+        dataTable = array2table(mass_record, ...
+        'VariableNames',{'time','mass'});
+    elseif istable(mass_record)
+        dataTable = mass_record;
+    end
+    dataTable.mass(dataTable.mass < 0) = 0; % adjust for minor issues with
         % zeroing the balance, should it zero to a slightly negative value
-    scatter(dataTable.Mass,dataTable.Time, ...
+    scatter(dataTable.mass,dataTable.time, ...
         'MarkerEdgeColor',[0 .5 .5], ...
         'MarkerFaceColor',[0 .7 .7], ...
         'LineWidth',1.5)
@@ -15,6 +23,9 @@ function plotMass(figHandle, mass_record, sampling_interval)
     xlabel('Mass (g)')
     ylabel('Time (s)')
     xlim([0 inf])
-    ylim([0 size(mass_record,1)*sampling_interval])
+    if ~isempty(varargin)
+        samplingInterval = varargin{1};
+        ylim([0 size(mass_record,1)*samplingInterval])
+    end
     drawnow
 end
