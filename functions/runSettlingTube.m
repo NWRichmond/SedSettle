@@ -2,7 +2,7 @@ function results = runSettlingTube(SampleVars, STvars)
 % RUNSETTLINGTUBE drives the data collection process from the digital mass
 %   balance. The process is driven using a timer. 
     if SampleVars.minutes < (21/60)
-        minutes = (21/60);
+        minutes = (21/60); % why is a minimum time specified here?
     else
         minutes = SampleVars.minutes;
     end
